@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đức Tâm – IELTS Vocabulary</title>
+
+<style>
+:root{
+  --red:#e63946;
+  --white:#ffffff;
+  --light:#fff5f5;
+}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:var(--light);
+}
+header{
+  background:var(--red);
+  color:white;
+  padding:16px;
+  text-align:center;
+}
+nav{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin:10px;
+}
+button{
+  background:var(--red);
+  color:white;
+  border:none;
+  padding:10px 14px;
+  border-radius:8px;
+  cursor:pointer;
+}
+button:hover{opacity:0.9}
+section{
+  background:white;
+  margin:12px;
+  padding:15px;
+  border-radius:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.word{
+  border-bottom:1px solid #eee;
+  padding:10px 0;
+}
+small{color:#555}
+.progress{
+  background:#eee;
+  border-radius:10px;
+  overflow:hidden;
+}
+.progress div{
+  height:10px;
+  background:var(--red);
+  width:0%;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>ĐỨC TÂM – IELTS VOCABULARY</h1>
+  <p>Học từ vựng IELTS từ Basic → 6.5 (Anh–Mỹ)</p>
+</header>
+
+<nav>
+  <button onclick="show('home')">Trang chủ</button>
+  <button onclick="show('vocab')">Từ vựng</button>
+  <button onclick="show('practice')">Luyện tập</button>
+  <button onclick="show('progress')">Tiến độ</button>
+</nav>
+
+<section id="home">
+<h2>🎯 Lộ trình học</h2>
+<ul>
+<li>Basic → 4.0</li>
+<li>4.0 → 5.0</li>
+<li>5.0 → 6.0</li>
+<li>6.0 → 6.5</li>
+</ul>
+<p>👉 Mỗi ngày học 5–10 từ để đạt hiệu quả cao nhất.</p>
+</section>
+
+<section id="vocab" style="display:none">
+<h2>📚 Từ vựng theo chủ đề</h2>
+
+<div class="word">
+<b>Improve</b> /ɪmˈpruːv/ 🔊
+<button onclick="speak('improve')">Nghe</button>
+<p>Nghĩa: cải thiện</p>
+<small>Speaking: I want to improve my English speaking skills.</small><br>
+<small>Writing: This policy helps improve education quality.</small><br>
+<small>Listening: Improve your pronunciation every day.</small><br>
+<small>Reading: Education can improve living standards.</small>
+</div>
+
+<div class="word">
+<b>Environment</b> /ɪnˈvaɪrənmənt/ 🔊
+<button onclick="speak('environment')">Nghe</button>
+<p>Nghĩa: môi trường</p>
+<small>Speaking: We should protect the environment.</small><br>
+<small>Writing: Environmental problems are becoming serious.</small><br>
+<small>Listening: Climate change affects the environment.</small><br>
+<small>Reading: Environmental protection is essential.</small>
+</div>
+
+<div class="word">
+<b>Opportunity</b> /ˌɒpəˈtjuːnəti/ 🔊
+<button onclick="speak('opportunity')">Nghe</button>
+<p>Nghĩa: cơ hội</p>
+<small>Speaking: Studying abroad gives me opportunities.</small><br>
+<small>Writing: Education creates job opportunities.</small><br>
+<small>Listening: This is a great opportunity for students.</small><br>
+<small>Reading: Equal opportunities should be provided.</small>
+</div>
+
+</section>
+
+<section id="practice" style="display:none">
+<h2>📝 Luyện tập nhanh</h2>
+<p>Chọn nghĩa đúng của từ <b>Improve</b>:</p>
+<button onclick="check(true)">A. Cải thiện</button>
+<button onclick="check(false)">B. Phá huỷ</button>
+<p id="result"></p>
+
+<h3>🎙 Luyện phát âm</h3>
+<p>Bấm nút và nói từ: <b>Improve</b></p>
+<button onclick="record()">🎤 Nói</button>
+<p id="speech"></p>
+</section>
+
+<section id="progress" style="display:none">
+<h2>📊 Tiến độ học</h2>
+<p>Số từ đã học: <span id="count">0</span></p>
+<div class="progress"><div id="bar"></div></div>
+<p>🔥 Chuỗi ngày học: <span id="streak">1</span></p>
+</section>
+
+<script>
+function show(id){
+  document.querySelectorAll("section").forEach(s=>s.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
+function speak(text){
+  let u = new SpeechSynthesisUtterance(text);
+  u.lang="en-US";
+  speechSynthesis.speak(u);
+}
+
+let learned = localStorage.getItem("learned") || 0;
+document.getElementById("count").innerText = learned;
+document.getElementById("bar").style.width = learned + "%";
+
+function check(correct){
+  let r = document.getElementById("result");
+  if(correct){
+    r.innerHTML="✅ Chính xác!";
+    learned++;
+    localStorage.setItem("learned", learned);
+    document.getElementById("count").innerText = learned;
+    document.getElementById("bar").style.width = learned + "%";
+  }else{
+    r.innerHTML="❌ Sai rồi, thử lại nhé!";
+  }
+}
+
+function record(){
+  if(!('webkitSpeechRecognition' in window)){
+    alert("Trình duyệt không hỗ trợ");
+    return;
+  }
+  let rec = new webkitSpeechRecognition();
+  rec.lang="en-US";
+  rec.start();
+  rec.onresult = e=>{
+    document.getElementById("speech").innerText =
+      "Bạn nói: " + e.results[0][0].transcript;
+  }
+}
+</script>
+
+</body>
+</html>
